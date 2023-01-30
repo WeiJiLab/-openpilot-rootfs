@@ -34,4 +34,17 @@ cp -Pra /build/aarch64-poky-linux/imx-parser/4.5.7-r0/image/*  /
 
 apt-get install -y libudev-dev libinput-dev libxkbcommon-dev libpam0g-dev libx11-xcb-dev libxcb-xfixes0-dev libxcb-composite0-dev libxcursor-dev libxcb-shape0-dev libdbus-1-dev libdbus-glib-1-dev libsystemd-dev libpixman-1-dev libcairo2-dev libffi-dev libxml2-dev kbd libexpat1-dev autoconf automake libtool meson cmake   
 # Version 1 rootfs
+cd /root/wayland-1.18.0/
+./configure --disable-documentation prefix=/usr  
+make -j8 && make install && ldconfig
+
+# Version 2 rootfs
+cd /root/wayland-protocols-imx
+./autogen.sh --prefix=/usr  
+make install && ldconfig
+
+# Version 3 rootfs
+cd /root/weston-imx
+meson build/ --prefix=/usr -Dbackend-default=auto -Dbackend-rdp=false -Dpipewire=false -Dsimple-clients=all -Ddemo-clients=true -Dcolor-management-colord=false -Drenderer-gl=true -Dbackend-fbdev=true -Drenderer-g2d=true -Dbackend-headless=false -Dimxgpu=true -Dbackend-drm=true -Dweston-launch=true -Dcolor-management-lcms=false -Dopengl=true -Dpam=true -Dremoting=false -Dsystemd=true -Dlauncher-logind=true -Dbackend-drm-screencast-vaapi=false -Dbackend-wayland=false -Dimage-webp=false -Dbackend-x11=false -Dxwayland=true   
+cd build && ninja -v -j 12 install 
 
