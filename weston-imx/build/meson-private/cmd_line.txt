@@ -1,0 +1,29 @@
+[options]
+backend-default = auto
+backend-rdp = false
+pipewire = false
+simple-clients = all
+demo-clients = true
+color-management-colord = false
+renderer-gl = true
+backend-fbdev = true
+renderer-g2d = true
+backend-headless = false
+imxgpu = true
+backend-drm = true
+weston-launch = true
+color-management-lcms = false
+opengl = true
+pam = true
+remoting = false
+systemd = true
+launcher-logind = true
+backend-drm-screencast-vaapi = false
+backend-wayland = false
+image-webp = false
+backend-x11 = false
+xwayland = true
+prefix = /usr
+
+[properties]
+

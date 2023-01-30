@@ -1,0 +1,10 @@
+prefix=/usr
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libweston-desktop
+Description: Desktop shells abstraction library for libweston compositors
+Version: 8.0.0
+Requires.private: libweston-8, wayland-server >=  1.17.0
+Libs: -L${libdir} -lweston-desktop-8
+Cflags: -I${includedir}/libweston-8

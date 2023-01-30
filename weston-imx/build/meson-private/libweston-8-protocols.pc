@@ -1,0 +1,11 @@
+prefix=/usr
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+datarootdir=${prefix}/share
+pkgdatadir=${pc_sysrootdir}${datarootdir}/libweston-8/protocols
+
+Name: libWeston Protocols
+Description: libWeston protocol files
+Version: 8.0.0
+Cflags: -I${includedir}

@@ -1,0 +1,10 @@
+prefix=/usr
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libweston API
+Description: Header files for libweston compositors development
+Version: 8.0.0
+Requires.private: wayland-server >=  1.17.0, pixman-1 >=  0.25.2, xkbcommon >=  0.3.0
+Libs: -L${libdir} -lweston-8
+Cflags: -I${includedir}/libweston-8
