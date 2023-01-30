@@ -33,5 +33,5 @@ cp -Pra /build/aarch64-mx8-poky-linux/linux-imx-headers/5.4-r0/image/*  /
 cp -Pra /build/aarch64-poky-linux/imx-parser/4.5.7-r0/image/*  /
 
 apt-get install -y libudev-dev libinput-dev libxkbcommon-dev libpam0g-dev libx11-xcb-dev libxcb-xfixes0-dev libxcb-composite0-dev libxcursor-dev libxcb-shape0-dev libdbus-1-dev libdbus-glib-1-dev libsystemd-dev libpixman-1-dev libcairo2-dev libffi-dev libxml2-dev kbd libexpat1-dev autoconf automake libtool meson cmake   
-
+# Version 1 rootfs
 
