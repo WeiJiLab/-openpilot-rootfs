@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "## Start to install packages ################################"
+
 chmod 777 /tmp /dev/null  
 
 # Install Base Package
@@ -47,4 +49,6 @@ make install && ldconfig
 cd /root/weston-imx
 meson build/ --prefix=/usr -Dbackend-default=auto -Dbackend-rdp=false -Dpipewire=false -Dsimple-clients=all -Ddemo-clients=true -Dcolor-management-colord=false -Drenderer-gl=true -Dbackend-fbdev=true -Drenderer-g2d=true -Dbackend-headless=false -Dimxgpu=true -Dbackend-drm=true -Dweston-launch=true -Dcolor-management-lcms=false -Dopengl=true -Dpam=true -Dremoting=false -Dsystemd=true -Dlauncher-logind=true -Dbackend-drm-screencast-vaapi=false -Dbackend-wayland=false -Dimage-webp=false -Dbackend-x11=false -Dxwayland=true   
 cd build && ninja -v -j 12 install 
+
+echo "## Finished to install packages ################################"
 

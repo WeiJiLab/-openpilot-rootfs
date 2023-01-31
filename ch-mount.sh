@@ -6,7 +6,7 @@ function mnt() {
 	sudo mount -t sysfs /sys ${2}sys
 	sudo mount -o bind /dev ${2}dev
 	sudo mount -o bind /dev/pts ${2}dev/pts
-	sudo chroot ${2}
+	sudo chroot ${2} /bin/bash -c "${3}"
 }
 function umnt() {
 	echo "UNMOUNTING" 
@@ -15,10 +15,10 @@ function umnt() {
 	sudo umount ${2}dev/pts
 	sudo umount ${2}dev
 }
-if [ "$1" == "-m" ] && [ -n "$2" ] ; then
-	mnt $1 $2
+if [ "$1" == "-m" ] && [ -n "$2" ] && [ -n "$3" ] ; then
+	mnt "$1" "$2" "$3"
 elif [ "$1" == "-u" ] && [ -n "$2" ]; then
-	umnt $1 $2
+	umnt "$1" "$2"
 else
 	echo ""
 	echo "Either 1'st, 2'nd or both parameters were missing"
