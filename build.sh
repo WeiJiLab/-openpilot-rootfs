@@ -6,7 +6,13 @@
 #       AddKeysToAgent yes
 #       StrictHostKeyChecking no
 #       IdentityFile ~/.ssh/id_rsa
+if [ -d './openpilot' ]; then
+    rm -rf './openpilot'
+fi
 git clone git@github.com:WeiJiLab/openpilot.git
+if [ "$?" != "0" ]; then
+    exit 1
+fi
 
 # Unpack rootfs & yocoto
 rm -rf rootfs
@@ -15,12 +21,12 @@ tar -zxvf ubuntu-base-20.04.1-base-arm64.tar.gz -C rootfs
 tar -zxvf yocoto.tar.gz
 
 # Install qemu
-sudo apt-get install -y qemu-user-static  
+sudo apt-get install -y qemu-user-static
 
 # Copy files
 mv build rootfs
-cp /usr/bin/qemu-aarch64-static rootfs/usr/bin   
-cp -b /etc/resolv.conf rootfs/etc/   
+cp /usr/bin/qemu-aarch64-static rootfs/usr/bin
+cp -b /etc/resolv.conf rootfs/etc/
 
 cp install_package.sh rootfs/root
 chmod u+x rootfs/root/install_package.sh

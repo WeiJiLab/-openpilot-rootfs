@@ -2,10 +2,23 @@
 
 echo "## Start to install packages ################################"
 
-chmod 777 /tmp /dev/null  
+chmod 777 /tmp /dev/null
+
+# this line ignored configuration of following packages with ncurses UI and default values will be used
+#   tzdata
+#   resolvconf
+#   keyboard-configuration
+#
+# if want to customize the values, could add preseed.txt file, and add settings
+# for tzdata, you could add following settings
+#   tzdata tzdata/Areas select Europe
+#   tzdata tzdata/Zones/Europe select Berlin
+# and then, add following script before install them with apt
+#   debconf-set-selections /your/preseed.txt
+export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
 
 # Install Base Package
-apt-get update  
+apt-get update --fix-missing
 apt-get install -y language-pack-en-base sudo ssh net-tools network-manager iputils-ping rsyslog bash-completion htop resolvconf dialog vim udhcpc udhcpd git v4l-utils alsa-utils git gcc less autoconf autopoint libtool bison flex gtk-doc-tools libglib2.0-dev libpango1.0-dev libatk1.0-dev kmod pciutils libjpeg-dev netplan.io  
 
 # Change Passwd
