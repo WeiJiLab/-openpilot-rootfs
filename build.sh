@@ -15,7 +15,7 @@ if [ "$?" != "0" ]; then
 fi
 
 # Unpack rootfs & yocoto
-rm -rf rootfs
+sudo rm -rf ./rootfs
 mkdir rootfs build
 tar -zxvf ubuntu-base-20.04.1-base-arm64.tar.gz -C rootfs
 tar -zxvf yocoto.tar.gz
@@ -31,6 +31,10 @@ cp -b /etc/resolv.conf rootfs/etc/
 cp install_package.sh rootfs/root
 chmod u+x rootfs/root/install_package.sh
 
+cp -r wayland-1.18.0 rootfs/root
+cp -r wayland-protocols-imx rootfs/root
+cp -r weston-imx rootfs/root
+
 # copy scripts which used to setup env of openpilot
 mkdir -p rootfs/openpilot
 cp -r openpilot/tools rootfs/openpilot/
@@ -40,12 +44,12 @@ chmod u+x rootfs/openpilot/update_requirements.sh
 cp openpilot/pyproject.toml rootfs/openpilot/
 cp openpilot/.python-version rootfs/openpilot/
 
-cp -r wayland-1.18.0 rootfs/root
-cp -r wayland-protocols-imx rootfs/root
-cp -r weston-imx rootfs/root
+# copy ubuntu-ports mirror source
+mv rootfs/etc/apt/sources.list rootfs/etc/apt/sources.list.official
+cp -f ./sources.list.ustc rootfs/etc/apt/sources.list
 
 # Chroot to rootfs & run setup scripts
-./ch-mount.sh -m rootfs/ '/root/install_package.sh && cd openpilot && ./tools/ubuntu_setup.sh && cd .. && rm -rf ./openpilot && exit'
+./ch-mount.sh -m rootfs/ '/root/install_package.sh'
 
 # Unmount rootfs
 ./ch-mount.sh -u rootfs/

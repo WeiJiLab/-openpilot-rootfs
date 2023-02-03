@@ -6,7 +6,13 @@ function mnt() {
 	sudo mount -t sysfs /sys ${2}sys
 	sudo mount -o bind /dev ${2}dev
 	sudo mount -o bind /dev/pts ${2}dev/pts
-	sudo chroot ${2} /bin/bash -c "${3}"
+    sudo mount -o bind /tmp ${2}tmp
+
+    if [ -n "${3}" ]; then
+	   sudo chroot "${2}" /bin/bash -c "${3}"
+    else
+        sudo chroot "${2}"
+    fi
 }
 function umnt() {
 	echo "UNMOUNTING" 
@@ -14,9 +20,14 @@ function umnt() {
 	sudo umount ${2}sys
 	sudo umount ${2}dev/pts
 	sudo umount ${2}dev
+    sudo umount ${2}tmp
 }
-if [ "$1" == "-m" ] && [ -n "$2" ] && [ -n "$3" ] ; then
-	mnt "$1" "$2" "$3"
+if [ "$1" == "-m" ] && [ -n "$2" ]; then
+    if [ -n "$3" ]; then
+	    mnt "$1" "$2" "$3"
+    else
+        mnt "$1" "$2"
+    fi
 elif [ "$1" == "-u" ] && [ -n "$2" ]; then
 	umnt "$1" "$2"
 else
