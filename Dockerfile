@@ -138,13 +138,46 @@ RUN apt-get update && apt-get install -y \
 	meson \
 	cmake
 	
+# ############################# #
+# ###### Install Wayland ###### #
+# ############################# #
+
+FROM ok8mp-install-packages-8 AS ok8mp-install-wayland
+
+WORKDIR /tmp
+RUN wget https://wayland.freedesktop.org/releases/wayland-1.18.0.tar.xz \
+ && tar xf wayland-1.18.0.tar.xz
+WORKDIR wayland-1.18.0
+RUN ./configure --disable-documentation prefix=/usr \
+ && make -j8 \
+ && make install \
+ && ldconfig
+ 
+# ####################################### #
+# ###### Install Wayland Protocols ###### #
+# ####################################### #
+
+FROM ok8mp-install-wayland AS ok8mp-install-wayland-protocols
+
+WORKDIR /tmp 
+RUN git clone https://source.codeaurora.org/external/imx/wayland-protocols-imx.git
+WORKDIR wayland-protocols-imx
+RUN git checkout wayland-protocols-imx-1.18
+RUN ./autogen.sh --prefix=/usr \
+ && make install \
+ && ldconfig
+
+	
 # ############################ #
 # ###### Install Weston ###### #
 # ############################ #
 
-FROM ok8mp-install-packages-8 AS ok8mp-install-weston
+FROM ok8mp-install-wayland-protocols AS ok8mp-install-weston
 
 WORKDIR /tmp
 RUN git clone https://source.codeaurora.org/external/imx/weston-imx.git
 WORKDIR weston-imx
-
+RUN git checkout weston-imx-8.0
+RUN meson build/ --prefix=/usr -Dbackend-default=auto -Dbackend-rdp=false -Dpipewire=false -Dsimple-clients=all -Ddemo-clients=true -Dcolor-management-colord=false -Drenderer-gl=true -Dbackend-fbdev=true -Drenderer-g2d=true -Dbackend-headless=false -Dimxgpu=true -Dbackend-drm=true -Dweston-launch=true -Dcolor-management-lcms=false -Dopengl=true -Dpam=true -Dremoting=false -Dsystemd=true -Dlauncher-logind=true -Dbackend-drm-screencast-vaapi=false -Dbackend-wayland=false -Dimage-webp=false -Dbackend-x11=false -Dxwayland=true 
+WORKDIR build
+RUN ninja -v -j 4 install
