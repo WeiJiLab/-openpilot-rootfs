@@ -181,3 +181,20 @@ RUN git checkout weston-imx-8.0
 RUN meson build/ --prefix=/usr -Dbackend-default=auto -Dbackend-rdp=false -Dpipewire=false -Dsimple-clients=all -Ddemo-clients=true -Dcolor-management-colord=false -Drenderer-gl=true -Dbackend-fbdev=true -Drenderer-g2d=true -Dbackend-headless=false -Dimxgpu=true -Dbackend-drm=true -Dweston-launch=true -Dcolor-management-lcms=false -Dopengl=true -Dpam=true -Dremoting=false -Dsystemd=true -Dlauncher-logind=true -Dbackend-drm-screencast-vaapi=false -Dbackend-wayland=false -Dimage-webp=false -Dbackend-x11=false -Dxwayland=true 
 WORKDIR build
 RUN ninja -v -j 4 install
+
+
+# ############################### #
+# ###### Install OpenPilot ###### #
+# ############################### #
+
+FROM ok8mp-install-weston AS ok8mp-install-openpilot
+
+WORKDIR /tmp
+RUN git clone https://github.com/WeiJiLab/openpilot.git
+WORKDIR openpilot
+RUN git submodule update --init 
+RUN chmod u+x tools/ubuntu_setup.sh \
+ && tools/ubuntu_setup.sh
+WORKDIR /tmp/openpilot
+RUN poetry shell \
+ && scons -u -j$(nproc)
