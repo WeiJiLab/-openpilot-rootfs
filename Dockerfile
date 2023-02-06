@@ -36,7 +36,7 @@ COPY ./sources.list.ustc /etc/apt/sources.list
 RUN apt-get update && apt-get install -y locales tzdata \
  && locale-gen en_US.UTF-8 \
  && update-locale LANG=en_US.UTF-8 \
- && ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+ && ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
  && dpkg-reconfigure -f noninteractive tzdata
 
 # ############################## #
@@ -114,7 +114,7 @@ RUN cp -Pra /tmp/build/imx8qmmek-poky-linux/systemd-serialgetty/1.0-r5/image/etc
 
 FROM ok8mp-install-packages-7 AS ok8mp-install-packages-8
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 	libudev-dev \
 	libinput-dev \
 	libxkbcommon-dev \
@@ -163,8 +163,8 @@ FROM ok8mp-install-wayland AS ok8mp-install-wayland-protocols
 WORKDIR /tmp 
 RUN git clone https://source.codeaurora.org/external/imx/wayland-protocols-imx.git
 WORKDIR wayland-protocols-imx
-RUN git checkout wayland-protocols-imx-1.18
-RUN ./autogen.sh --prefix=/usr \
+RUN git checkout wayland-protocols-imx-1.18 \
+ && ./autogen.sh --prefix=/usr \
  && make install \
  && ldconfig
 	
@@ -177,8 +177,8 @@ FROM ok8mp-install-wayland-protocols AS ok8mp-install-weston
 WORKDIR /tmp
 RUN git clone https://source.codeaurora.org/external/imx/weston-imx.git
 WORKDIR weston-imx
-RUN git checkout weston-imx-8.0
-RUN meson build/ --prefix=/usr -Dbackend-default=auto -Dbackend-rdp=false -Dpipewire=false -Dsimple-clients=all -Ddemo-clients=true -Dcolor-management-colord=false -Drenderer-gl=true -Dbackend-fbdev=true -Drenderer-g2d=true -Dbackend-headless=false -Dimxgpu=true -Dbackend-drm=true -Dweston-launch=true -Dcolor-management-lcms=false -Dopengl=true -Dpam=true -Dremoting=false -Dsystemd=true -Dlauncher-logind=true -Dbackend-drm-screencast-vaapi=false -Dbackend-wayland=false -Dimage-webp=false -Dbackend-x11=false -Dxwayland=true 
+RUN git checkout weston-imx-8.0 \
+ && meson build/ --prefix=/usr -Dbackend-default=auto -Dbackend-rdp=false -Dpipewire=false -Dsimple-clients=all -Ddemo-clients=true -Dcolor-management-colord=false -Drenderer-gl=true -Dbackend-fbdev=true -Drenderer-g2d=true -Dbackend-headless=false -Dimxgpu=true -Dbackend-drm=true -Dweston-launch=true -Dcolor-management-lcms=false -Dopengl=true -Dpam=true -Dremoting=false -Dsystemd=true -Dlauncher-logind=true -Dbackend-drm-screencast-vaapi=false -Dbackend-wayland=false -Dimage-webp=false -Dbackend-x11=false -Dxwayland=true 
 WORKDIR build
 RUN ninja -v -j 4 install
 
@@ -186,21 +186,90 @@ RUN ninja -v -j 4 install
 # ###### Install Tools for OpenPilot ###### #
 # ######################################### #
 
-# Please refer to tools/update_ubuntu.sh to see what needs to be installed
+FROM ok8mp-install-weston AS ok8mp-install-openpilot-tools
 
+# Please refer to tools/update_ubuntu.sh to see what needs to be installed
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+    autoconf \
+    build-essential \
+    ca-certificates \
+    casync \
+    clang \
+    cmake \
+    make \
+    cppcheck \
+    libtool \
+    gcc-arm-none-eabi \
+    bzip2 \
+    liblzma-dev \
+    libarchive-dev \
+    libbz2-dev \
+    capnproto \
+    libcapnp-dev \
+    curl \
+    libcurl4-openssl-dev \
+    git \
+    git-lfs \
+    ffmpeg \
+    libavformat-dev \
+    libavcodec-dev \
+    libavdevice-dev \
+    libavutil-dev \
+    libavfilter-dev \
+    libeigen3-dev \
+    libffi-dev \
+    libglew-dev \
+    libgles2-mesa-dev \
+    libglfw3-dev \
+    libglib2.0-0 \
+    libomp-dev \
+    libopencv-dev \
+    libpng16-16 \
+    libportaudio2 \
+    libssl-dev \
+    libsqlite3-dev \
+    libusb-1.0-0-dev \
+    libzmq3-dev \
+    libsystemd-dev \
+    locales \
+    opencl-headers \
+    ocl-icd-libopencl1 \
+    ocl-icd-opencl-dev \
+    clinfo \
+    qml-module-qtquick2 \
+    qtmultimedia5-dev \
+    qtlocation5-dev \
+    qtpositioning5-dev \
+    qttools5-dev-tools \
+    libqt5sql5-sqlite \
+    libqt5svg5-dev \
+    libqt5charts5-dev \
+    libqt5x11extras5-dev \
+    libreadline-dev \
+    libdw1 \
+    valgrind \
+    libavresample-dev \
+    qt5-default \
+    python-dev
 
 # ######################################### #
 # ###### Build and Install OpenPilot ###### #
 # ######################################### #
 
-FROM ok8mp-install-weston AS ok8mp-install-openpilot
+FROM ok8mp-install-openpilot-tools AS ok8mp-download-openpilot
 
+# Clone source code
 WORKDIR /tmp
 RUN git clone https://github.com/WeiJiLab/openpilot.git
 WORKDIR openpilot
 RUN git submodule update --init 
-RUN chmod u+x tools/ubuntu_setup.sh \
- && tools/ubuntu_setup.sh
-WORKDIR /tmp/openpilot
-RUN poetry shell \
- && scons -u -j$(nproc)
+# RUN chmod u+x tools/ubuntu_setup.sh \
+#  && tools/ubuntu_setup.sh
+
+FROM ok8mp-download-openpilot AS ok8mp-build-openpilot
+
+# Build openpilot
+# WORKDIR /tmp/openpilot
+# RUN poetry shell \
+# && scons -u -j$(nproc)
