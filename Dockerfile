@@ -27,24 +27,26 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en  
 ENV LC_ALL en_US.UTF-8
 ENV TZ Asia/Shanghai
-RUN apt-get update && apt-get install -y locales # systemd
+
+# Use domestic source
+RUN mv /etc/apt/sources.list /etc/apt/sources.list.official
+COPY ./sources.list.ustc /etc/apt/sources.list
 
 # Locale setup
-RUN locale-gen en_US.UTF-8
-RUN update-locale LANG=en_US.UTF-8
-# RUN timedatectl set-timezone Asia/Shanghai
-
-# Disable interative
-ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get install -y locales tzdata \
+ && locale-gen en_US.UTF-8 \
+ && update-locale LANG=en_US.UTF-8 \
+ && ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+ && dpkg-reconfigure -f noninteractive tzdata
 
 # ############################## #
 # ###### Install Packages ###### #
 # ############################## #
 
 FROM ok8mp-ubuntu-base AS ok8mp-install-packages-6
-RUN chmod 777 /tmp
-RUN chmod 777 /dev/null
-RUN apt-get update && apt-get install -y \
+RUN chmod 777 /tmp \
+ && chmod 777 /dev/null \
+ && apt-get update && apt-get install -y \
 	language-pack-en-base \
 	sudo \
 	ssh \
@@ -88,7 +90,7 @@ RUN useradd -s '/bin/bash' -m -G adm,sudo lito  \
 
 # Set Hostname
  && sh -c 'echo "ubuntu20" > /etc/hostname' \
- && dpkg-reconfigure resolvconf
+ && dpkg-reconfigure -f noninteractive resolvconf
 
 FROM ok8mp-install-packages-6-3 AS ok8mp-install-packages-7
 
@@ -103,7 +105,6 @@ RUN cp -Pra /tmp/build/imx8qmmek-poky-linux/systemd-serialgetty/1.0-r5/image/etc
  && rm -rf /usr/lib/aarch64-linux-gnu/mesa-egl* \
  && rm -rf /usr/lib/aarch64-linux-gnu/libglapi.so.0* \ 
  && rm -rf /usr/lib/aarch64-linux-gnu/libwayland-* \
-
 
  && cp -Pra /tmp/build/aarch64-mx8-poky-linux/libdrm/2.4.102.imx-r0/image/* / \
  && cp -Pra /tmp/build/aarch64-mx8-poky-linux/imx-gpu-viv/1_6.4.3.p1.0-aarch64-r0/image/* / \
@@ -166,7 +167,6 @@ RUN git checkout wayland-protocols-imx-1.18
 RUN ./autogen.sh --prefix=/usr \
  && make install \
  && ldconfig
-
 	
 # ############################ #
 # ###### Install Weston ###### #
@@ -182,10 +182,16 @@ RUN meson build/ --prefix=/usr -Dbackend-default=auto -Dbackend-rdp=false -Dpipe
 WORKDIR build
 RUN ninja -v -j 4 install
 
+# ######################################### #
+# ###### Install Tools for OpenPilot ###### #
+# ######################################### #
 
-# ############################### #
-# ###### Install OpenPilot ###### #
-# ############################### #
+# Please refer to tools/update_ubuntu.sh to see what needs to be installed
+
+
+# ######################################### #
+# ###### Build and Install OpenPilot ###### #
+# ######################################### #
 
 FROM ok8mp-install-weston AS ok8mp-install-openpilot
 
