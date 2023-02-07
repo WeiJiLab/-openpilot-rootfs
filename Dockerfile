@@ -7,13 +7,6 @@ ADD ubuntu-base-20.04.1-base-arm64.tar.gz /
 # Stop on error
 RUN set -xe
 
-# Build folder
-# RUN mkdir -p /tmp/ok8mp
-
-# ENV USERNAME=comma
-# ENV PASSWD=comma
-# ENV HOST=tici
-
 # Base system setup
 RUN echo "resolvconf resolvconf/linkify-resolvconf boolean false" | debconf-set-selections
 
@@ -253,9 +246,9 @@ RUN apt-get update \
     qt5-default \
     python-dev
 
-# ######################################### #
-# ###### Build and Install OpenPilot ###### #
-# ######################################### #
+# ############################# #
+# ###### Clone OpenPilot ###### #
+# ############################# #
 
 FROM ok8mp-install-openpilot-tools AS ok8mp-download-openpilot
 
@@ -267,7 +260,38 @@ RUN git submodule update --init
 # RUN chmod u+x tools/ubuntu_setup.sh \
 #  && tools/ubuntu_setup.sh
 
-FROM ok8mp-download-openpilot AS ok8mp-build-openpilot
+# ############################################### #
+# ###### Update Requirements for OpenPilot ###### #
+# ############################################### #
+
+FROM ok8mp-download-openpilot AS ok8mp-update-requirements
+
+USER lito
+# ENV HOME "/home/lito"
+WORKDIR /tmp
+RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+COPY ./.pyenvrc /tmp
+RUN echo -e "\n. ~/.pyenvrc" >> ${HOME}/.bashrc \
+ && cat /tmp/.pyenvrc > ${HOME}/.pyenvrc
+
+# setup now without restarting shell
+ENV PATH=${HOME}/.pyenv/bin:${HOME}/.pyenv/shims:${PATH}
+ENV PYENV_ROOT="${HOME}/.pyenv"
+RUN eval "$(pyenv init -)" \
+ && eval "$(pyenv virtualenv-init -)"
+
+# ############################# #
+# ###### Build OpenPilot ###### #
+# ############################# #
+
+# RUN source ~/.bashrc
+#if [ -z "$OPENPILOT_ENV" ]; then
+#  printf "\nsource %s/tools/openpilot_env.sh" "$ROOT" >> ~/.bashrc
+#  source ~/.bashrc
+#  echo "added openpilot_env to bashrc"
+#fi
+
+FROM ok8mp-update-requirements AS ok8mp-build-openpilot
 
 # Build openpilot
 # WORKDIR /tmp/openpilot
