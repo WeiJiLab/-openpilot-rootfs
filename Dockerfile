@@ -267,7 +267,6 @@ RUN git submodule update --init
 FROM ok8mp-download-openpilot AS ok8mp-update-requirements
 
 USER lito
-# ENV HOME "/home/lito"
 WORKDIR /tmp
 RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 COPY ./.pyenvrc /tmp
@@ -275,10 +274,16 @@ RUN echo -e "\n. ~/.pyenvrc" >> ${HOME}/.bashrc \
  && cat /tmp/.pyenvrc > ${HOME}/.pyenvrc
 
 # setup now without restarting shell
-ENV PATH=${HOME}/.pyenv/bin:${HOME}/.pyenv/shims:${PATH}
+#TODO: In theory, specifying the USER should automatically update the HOME variable as well, but this is NOT the case during image building
+ENV HOME="/home/lito"
+ENV PATH="${HOME}/.pyenv/bin:${HOME}/.pyenv/shims:${PATH}"
 ENV PYENV_ROOT="${HOME}/.pyenv"
 RUN eval "$(pyenv init -)" \
  && eval "$(pyenv virtualenv-init -)"
+
+WORKDIR ${HOME}
+ARG MAKEFLAGS="-j$(nproc)"
+RUN pyenv update
 
 # ############################# #
 # ###### Build OpenPilot ###### #
