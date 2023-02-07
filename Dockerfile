@@ -244,7 +244,8 @@ RUN apt-get update \
     valgrind \
     libavresample-dev \
     qt5-default \
-    python-dev
+    python-dev \
+    python3-pip
 
 # ############################# #
 # ###### Clone OpenPilot ###### #
@@ -281,9 +282,34 @@ ENV PYENV_ROOT="${HOME}/.pyenv"
 RUN eval "$(pyenv init -)" \
  && eval "$(pyenv virtualenv-init -)"
 
-WORKDIR ${HOME}
-ARG MAKEFLAGS="-j$(nproc)"
+# nproc might not work in Dockerfile
+# ARG MAKEFLAGS="-j$(nproc)"
+
+# .python-version is a file under the root of openpilot project. As of the time of writing it is 3.8.10
+# ARG PYENV_PYTHON_VERSION=$(cat .python-version)
+# Maybe all we need here is pip
+
 RUN pyenv update
+
+# Seems that python 3.8.10 has already been installed under /usr/bin, so no need to install again
+# ARG CONFIGURE_OPTS="--enable-shared" pyenv install -f ${PYENV_PYTHON_VERSION}
+
+RUN eval "$(pyenv init --path)" \
+
+# update pip
+ && pip install pip==22.3.1 \
+ && pip install poetry==1.2.2
+# RUN poetry config virtualenvs.prefer-active-python true --local \
+
+# POETRY_INSTALL_ARGS=""
+# if [ -d "./xx" ] || [ -n "$XX" ]; then
+#   echo "WARNING: using xx dependency group, installing globally"
+#   poetry config virtualenvs.create false --local
+#   POETRY_INSTALL_ARGS="--with xx --sync"
+# fi
+
+# && poetry install --no-cache --no-root $POETRY_INSTALL_ARGS \
+# && pyenv rehash
 
 # ############################# #
 # ###### Build OpenPilot ###### #
