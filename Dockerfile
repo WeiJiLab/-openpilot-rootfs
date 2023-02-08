@@ -273,21 +273,15 @@ WORKDIR /tmp/openpilot
 RUN rm -f ./pyproject.toml ./poetry.lock
 ADD docker_scripts/pyproject.toml docker_scripts/poetry.lock .
 RUN ./update_requirements.sh
+# Adding extra env-vars, which is duplicate work, already done on the last line '. ~/.pyenvrc' in /root/.bashrc
+# RUN echo "\nsource /tmp/openpilot/tools/openpilot_env.sh" >> ~/.bashrc
 
 # ############################# #
 # ###### Build OpenPilot ###### #
 # ############################# #
 
-# RUN source ~/.bashrc
-#if [ -z "$OPENPILOT_ENV" ]; then
-#  printf "\nsource %s/tools/openpilot_env.sh" "$ROOT" >> ~/.bashrc
-#  source ~/.bashrc
-#  echo "added openpilot_env to bashrc"
-#fi
-
 FROM ok8mp-update-requirements AS ok8mp-build-openpilot
 
-# Build openpilot
-# WORKDIR /tmp/openpilot
-# RUN poetry shell \
-# && scons -u -j$(nproc)
+WORKDIR /tmp/openpilot
+ADD docker_scripts/build_openpilot.sh .
+RUN ./build_openpilot.sh
