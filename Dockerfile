@@ -267,49 +267,18 @@ RUN git submodule update --init
 
 FROM ok8mp-download-openpilot AS ok8mp-update-requirements
 
-USER lito
-WORKDIR /tmp
-RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
-COPY ./.pyenvrc /tmp
-RUN echo -e "\n. ~/.pyenvrc" >> ${HOME}/.bashrc \
- && cat /tmp/.pyenvrc > ${HOME}/.pyenvrc
+#USER lito
+WORKDIR /tmp/openpilot
+ADD docker_scripts/update_requirements_1.sh .
+#SHELL ["/bin/bash", "-c"]
+RUN ./update_requirements_1.sh
 
-# setup now without restarting shell
-#TODO: In theory, specifying the USER should automatically update the HOME variable as well, but this is NOT the case during image building
-ENV HOME="/home/lito"
-ENV PATH="${HOME}/.pyenv/bin:${HOME}/.pyenv/shims:${PATH}"
-ENV PYENV_ROOT="${HOME}/.pyenv"
-RUN eval "$(pyenv init -)" \
- && eval "$(pyenv virtualenv-init -)"
+FROM ok8mp-update-requirements AS ok8mp-update-requirements-1
 
-# nproc might not work in Dockerfile
-# ARG MAKEFLAGS="-j$(nproc)"
+ADD docker_scripts/update_requirements_2.sh .
+RUN ./update_requirements_2.sh
 
-# .python-version is a file under the root of openpilot project. As of the time of writing it is 3.8.10
-# ARG PYENV_PYTHON_VERSION=$(cat .python-version)
-# Maybe all we need here is pip
-
-RUN pyenv update
-
-# Seems that python 3.8.10 has already been installed under /usr/bin, so no need to install again
-# ARG CONFIGURE_OPTS="--enable-shared" pyenv install -f ${PYENV_PYTHON_VERSION}
-
-RUN eval "$(pyenv init --path)" \
-
-# update pip
- && pip install pip==22.3.1 \
- && pip install poetry==1.2.2
-# RUN poetry config virtualenvs.prefer-active-python true --local \
-
-# POETRY_INSTALL_ARGS=""
-# if [ -d "./xx" ] || [ -n "$XX" ]; then
-#   echo "WARNING: using xx dependency group, installing globally"
-#   poetry config virtualenvs.create false --local
-#   POETRY_INSTALL_ARGS="--with xx --sync"
-# fi
-
-# && poetry install --no-cache --no-root $POETRY_INSTALL_ARGS \
-# && pyenv rehash
+FROM ok8mp-update-requirements-1 AS ok8mp-update-requirements-2
 
 # ############################# #
 # ###### Build OpenPilot ###### #
@@ -322,7 +291,7 @@ RUN eval "$(pyenv init --path)" \
 #  echo "added openpilot_env to bashrc"
 #fi
 
-FROM ok8mp-update-requirements AS ok8mp-build-openpilot
+FROM ok8mp-update-requirements-2 AS ok8mp-build-openpilot
 
 # Build openpilot
 # WORKDIR /tmp/openpilot
