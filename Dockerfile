@@ -267,18 +267,12 @@ RUN git submodule update --init
 
 FROM ok8mp-download-openpilot AS ok8mp-update-requirements
 
-#USER lito
 WORKDIR /tmp/openpilot
-ADD docker_scripts/update_requirements_1.sh .
-#SHELL ["/bin/bash", "-c"]
-RUN ./update_requirements_1.sh
-
-FROM ok8mp-update-requirements AS ok8mp-update-requirements-1
-
-ADD docker_scripts/update_requirements_2.sh .
-RUN ./update_requirements_2.sh
-
-FROM ok8mp-update-requirements-1 AS ok8mp-update-requirements-2
+# The dependencies in pyproject.toml yields installation error on an ARM machine. We must replace pyproject.toml with a proper one. 
+# TODO: After revising the Weijilab/openpilot project accordingly, this step can be skipped.
+RUN rm -f ./pyproject.toml ./poetry.lock
+ADD docker_scripts/pyproject.toml docker_scripts/poetry.lock .
+RUN ./update_requirements.sh
 
 # ############################# #
 # ###### Build OpenPilot ###### #
@@ -291,7 +285,7 @@ FROM ok8mp-update-requirements-1 AS ok8mp-update-requirements-2
 #  echo "added openpilot_env to bashrc"
 #fi
 
-FROM ok8mp-update-requirements-2 AS ok8mp-build-openpilot
+FROM ok8mp-update-requirements AS ok8mp-build-openpilot
 
 # Build openpilot
 # WORKDIR /tmp/openpilot
