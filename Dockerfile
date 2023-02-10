@@ -268,10 +268,12 @@ RUN git submodule update --init
 FROM ok8mp-download-openpilot AS ok8mp-update-requirements
 
 WORKDIR /tmp/openpilot
-# The dependencies in pyproject.toml yields installation error on an ARM machine. We must replace pyproject.toml with a proper one. 
+
+# The dependencies in pyproject.toml yields installation error on an ARM machine. We must replace pyproject.toml with a proper one.
+# We also modify update_requirements.sh so that poetry does not create a virtual env. The docker container itself is already isolated.
 # TODO: After revising the Weijilab/openpilot project accordingly, this step can be skipped.
-RUN rm -f ./pyproject.toml ./poetry.lock
-ADD docker_scripts/pyproject.toml docker_scripts/poetry.lock .
+RUN rm -f ./pyproject.toml ./poetry.lock ./update_requirements.sh
+ADD docker_scripts/pyproject.toml docker_scripts/poetry.lock docker_scripts/update_requirements.sh .
 RUN ./update_requirements.sh
 # Adding extra env-vars, which is duplicate work, already done on the last line '. ~/.pyenvrc' in /root/.bashrc
 # RUN echo "\nsource /tmp/openpilot/tools/openpilot_env.sh" >> ~/.bashrc
