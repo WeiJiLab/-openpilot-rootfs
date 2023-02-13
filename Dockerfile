@@ -285,5 +285,6 @@ RUN ./update_requirements.sh
 FROM ok8mp-update-requirements AS ok8mp-build-openpilot
 
 WORKDIR /tmp/openpilot
-ADD docker_scripts/build_openpilot.sh .
+RUN rm -f ./SConstruct
+ADD docker_scripts/build_openpilot.sh docker_scripts/SConstruct .
 RUN ./build_openpilot.sh

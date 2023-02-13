@@ -23,7 +23,7 @@ poetry shell
 echo "=================================================== After poetry shell" >> ${TF}
 #echo "ldconfig can find the following:" >> ${TF}
 #echo $(ldconfig -v) >> ${TF}
-echo "poetry has installed the following packages:" >> ${TF}
-echo $(poetry show) >> ${TF}
 
+echo "SConstruct files to be revised" >> ${TF}
+find . -name SConstruct >> ${TF}
 #scons -u -j$(nproc)
