@@ -287,4 +287,5 @@ FROM ok8mp-update-requirements AS ok8mp-build-openpilot
 WORKDIR /tmp/openpilot
 RUN rm -f ./SConstruct
 ADD docker_scripts/build_openpilot.sh docker_scripts/SConstruct .
+ADD third_party/acados/aarch64 third_party/acados/aarch64
 RUN ./build_openpilot.sh

@@ -24,6 +24,6 @@ echo "=================================================== After poetry shell" >>
 #echo "ldconfig can find the following:" >> ${TF}
 #echo $(ldconfig -v) >> ${TF}
 
-echo "SConstruct files to be revised" >> ${TF}
-find . -name SConstruct >> ${TF}
-#scons -u -j$(nproc)
+echo "SConscript files to be revised" >> ${TF}
+find . -name SConscript >> ${TF}
+scons -u -j$(nproc)

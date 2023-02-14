@@ -133,6 +133,22 @@ else:
       f"{brew_prefix}/include",
       f"{brew_prefix}/opt/openssl/include",
     ]
+  # aarch64  
+  elif arch == "aarch64":
+    cpppath = [
+      "#third_party/opencl/include",
+    ]
+    libpath = [
+      "#third_party/acados/larch64/lib",
+      "#third_party/snpe/larch64",
+      "#third_party/libyuv/larch64/lib",
+      #"#third_party/mapbox-gl-native-qt/x86_64",
+      "#cereal",
+      "#common",
+      "/usr/lib/aarch64-linux-gnu",
+      "/usr/lib",
+      "/usr/local/lib",
+    ]
   # Linux 86_64
   else:
     libpath = [
