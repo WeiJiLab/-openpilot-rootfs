@@ -1,0 +1,282 @@
+#38 0.517 Creating virtualenv openpilot-xtxImsEf-py3.8 in /root/.cache/pypoetry/virtualenvs                                                                                           
+#38 0.776 Installing dependencies from lock file                                                                                                                                      
+#38 10.15 
+#38 10.15 Package operations: 189 installs, 1 update, 0 removals
+#38 10.15 
+#38 10.15   • Installing pycparser (2.21)
+#38 12.01   • Installing cffi (1.15.1)
+#38 12.01   • Installing pyparsing (3.0.9)
+#38 12.83   • Installing attrs (22.1.0)
+#38 12.84   • Installing certifi (2022.9.24)
+#38 12.84   • Installing charset-normalizer (2.1.1)
+#38 12.84   • Installing cryptography (37.0.4)
+#38 12.84   • Installing idna (3.4)
+#38 12.84   • Installing iniconfig (1.1.1)
+#38 12.84   • Installing jeepney (0.8.0)
+#38 12.84   • Installing markupsafe (2.1.1)
+#38 13.26   • Installing mdurl (0.1.2)
+#38 13.48   • Installing more-itertools (9.0.0)
+#38 13.81   • Installing numpy (1.23.4)
+#38 13.89   • Installing packaging (21.3)
+#38 13.90   • Installing pluggy (1.0.0)
+#38 13.93   • Installing py (1.11.0)
+#38 13.93   • Installing pytz (2022.5)
+#38 13.94   • Updating setuptools (67.1.0 -> 65.5.0)
+#38 14.96   • Installing six (1.16.0)
+#38 15.01   • Installing tomli (2.0.1)
+#38 15.03   • Installing typing-extensions (4.4.0)
+#38 15.10   • Installing urllib3 (1.26.12)
+#38 15.10   • Installing zipp (3.9.0)
+#38 21.33   • Installing alabaster (0.7.12)
+#38 21.33   • Installing azure-common (1.1.28)
+#38 21.33   • Installing babel (2.10.3)
+#38 21.33   • Installing contourpy (1.0.5)
+#38 21.33   • Installing crashtest (0.3.1)
+#38 21.33   • Installing cycler (0.11.0)
+#38 21.33   • Installing distlib (0.3.6)
+#38 21.34   • Installing docutils (0.17.1)
+#38 21.78   • Installing filelock (3.8.0)
+#38 21.80   • Installing fonttools (4.37.4)
+#38 21.82   • Installing humanfriendly (10.0)
+#38 22.07   • Installing imagesize (1.4.1)
+#38 22.10   • Installing importlib-metadata (4.13.0)
+#38 22.14   • Installing importlib-resources (5.10.0)
+#38 22.24   • Installing jaraco-classes (3.2.3)
+#38 22.64   • Installing jinja2 (3.1.2)
+#38 22.68   • Installing kiwisolver (1.4.4)
+#38 22.78   • Installing lazy-object-proxy (1.7.1)
+#38 22.92   • Installing lockfile (0.12.2)
+#38 22.94   • Installing markdown-it-py (2.1.0)
+#38 22.96   • Installing mpmath (1.2.1)
+#38 23.09   • Installing msgpack (1.0.4)
+#38 23.26   • Installing pillow (9.2.0)
+#38 23.30   • Installing pkgutil-resolve-name (1.3.10)
+#38 23.37   • Installing platformdirs (2.5.2)
+#38 23.52   • Installing poetry-core (1.3.2)
+#38 23.82   • Installing ptyprocess (0.7.0)
+#38 23.91   • Installing pygments (2.13.0)
+#38 23.95   • Installing pylev (1.4.0)
+#38 24.27   • Installing pyrsistent (0.18.1)
+#38 24.29   • Installing pytest (7.1.3)
+#38 24.41   • Installing python-dateutil (2.8.2)
+#38 24.53   • Installing requests (2.28.1)
+#38 24.59   • Installing secretstorage (3.3.3)
+#38 25.99   • Installing setuptools-scm (7.0.5)
+#38 26.44   • Installing snowballstemmer (2.2.0)
+#38 26.49   • Installing sphinxcontrib-applehelp (1.0.2)
+#38 26.49   • Installing sphinxcontrib-devhelp (1.0.2)
+#38 26.68   • Installing sphinxcontrib-htmlhelp (2.0.0)
+#38 26.78   • Installing sphinxcontrib-jsmath (1.0.1)
+#38 27.12   • Installing sphinxcontrib-qthelp (1.0.3)
+#38 27.21   • Installing sphinxcontrib-serializinghtml (1.1.5)
+#38 27.27   • Installing webencodings (0.5.1)
+#38 27.45   • Installing wrapt (1.14.1)
+#38 40.64   • Installing astroid (2.12.12)
+#38 40.64   • Installing azure-storage-common (2.1.0)
+#38 40.64   • Installing bcrypt (4.0.1)
+#38 40.64   • Installing cachecontrol (0.12.11)
+#38 40.64   • Installing cachy (0.3.0)
+#38 40.64   • Installing click (8.1.3)
+#38 40.64   • Installing cleo (1.0.0a5)
+#38 40.64   • Installing cfgv (3.3.1)
+#38 41.13   • Installing coloredlogs (15.0.1)
+#38 41.15   • Installing dill (0.3.5.1)
+#38 41.36   • Installing dulwich (0.20.46)
+#38 41.65   • Installing execnet (1.9.0)
+#38 41.67   • Installing flatbuffers (22.9.24)
+#38 41.67   • Installing h3 (3.7.4)
+#38 41.83   • Installing html5lib (1.1)
+#38 42.15   • Installing identify (2.5.6)
+#38 42.21   • Installing ioctl-opt (1.2.2)
+#38 42.30   • Installing isort (5.10.1)
+#38 42.38   • Installing itsdangerous (2.1.2)
+#38 42.49   • Installing jsonschema (4.16.0)
+#38 42.51   • Installing keyring (23.9.3)
+#38 42.61   • Installing matplotlib (3.6.1)
+#38 42.95   • Installing mccabe (0.6.1)
+#38 43.13   • Installing mdit-py-plugins (0.3.1)
+#38 43.17   • Installing mypy-extensions (0.4.3)
+#38 43.22   • Installing ncompress (1.0.0)
+#38 43.31   • Installing nodeenv (1.7.0)
+#38 43.50   • Installing pexpect (4.8.0)
+#38 43.69   • Installing pkginfo (1.8.3)
+#38 43.94   • Installing poetry-plugin-export (1.1.2)
+#38 44.19   • Installing protobuf (3.20.1)
+#38 44.25   • Installing pycodestyle (2.8.0)
+#38 44.28   • Installing pyflakes (2.4.0)
+#38 44.55   • Installing pynacl (1.5.0)
+#38 44.59   • Installing pytest-forked (1.4.0)
+#38 44.91   • Installing pytools (2022.1.12)
+#38 44.98   • Installing pyyaml (6.0)
+#38 45.16   • Installing requests-toolbelt (0.9.1)
+#38 45.16   • Installing scipy (1.9.3)
+#38 45.63   • Installing shellingham (1.5.0)
+#38 45.91   • Installing sortedcontainers (2.4.0)
+#38 46.07   • Installing sphinx (5.3.0)
+#38 46.25   • Installing sympy (1.11.1)
+#38 46.41   • Installing toml (0.10.2)
+#38 46.47   • Installing tomlkit (0.11.5)
+#38 46.61   • Installing types-urllib3 (1.26.25.1)
+#38 46.98   • Installing virtualenv (20.16.5)
+#38 47.29   • Installing werkzeug (2.2.2)
+#38 64.80   • Installing atomicwrites (1.4.1)
+#38 64.80   • Installing av (9.2.0)
+#38 64.80   • Installing azure-storage-blob (2.1.0)
+#38 64.80   • Installing breathe (4.34.0)
+#38 64.81   • Installing casadi (3.5.5)
+#38 64.81   • Installing carla (0.9.13)
+#38 64.81   • Installing coverage (6.5.0)
+#38 64.81   • Installing control (0.9.2)
+#38 64.93 
+#38 64.93   RuntimeError
+#38 64.93 
+#38 64.93   Unable to find installation candidates for carla (0.9.13)
+#38 64.93 
+#38 64.93   at ~/.pyenv/versions/3.8.10/lib/python3.8/site-packages/poetry/installation/chooser.py:103 in choose_for
+#38 64.94        99│ 
+#38 64.94       100│             links.append(link)
+#38 64.94       101│ 
+#38 64.94       102│         if not links:
+#38 64.94     → 103│             raise RuntimeError(f"Unable to find installation candidates for {package}")
+#38 64.94       104│ 
+#38 64.94       105│         # Get the best link
+#38 64.94       106│         chosen = max(links, key=lambda link: self._sort_key(package, link))
+#38 64.94       107│ 
+#38 64.94 
+#38 64.94   • Installing crcmod (1.7)
+#38 65.58   • Installing cython (0.29.32)
+#38 65.79   • Installing dictdiffer (0.9.0)
+#38 65.91   • Installing fastcluster (1.2.6)
+#38 66.70   • Installing flake8 (4.0.1)
+#38 68.07   • Installing flask (2.2.2)
+#38 68.82   • Installing ft4222 (1.6.0)
+#38 69.18   • Installing future-fstrings (1.2.0)
+#38 69.19   • Installing gunicorn (20.1.0)
+#38 69.98   • Installing hatanaka (2.4.0)
+#38 70.25   • Installing hexdump (3.3)
+#38 70.26   • Installing hypothesis (6.46.7)
+#38 70.84   • Installing inputs (0.5)
+#38 71.36   • Installing json-rpc (1.13.0)
+#38 71.43   • Installing libusb1 (3.0.0)
+#38 72.01   • Installing lru-dict (1.1.8)
+#38 72.01   • Installing lxml (4.9.1)
+#38 72.22   • Installing mpld3 (0.5.8)
+#38 72.99   • Installing mypy (0.961)
+#38 73.20   • Installing myst-parser (0.18.1)
+#38 73.41   • Installing natsort (8.2.0)
+#38 73.84   • Installing nose (1.3.7)
+#38 74.02   • Installing onnx (1.12.0)
+#38 74.63   • Installing onnxruntime-gpu (1.12.1)
+#38 74.96 
+#38 74.96   RuntimeError
+#38 74.96 
+#38 74.97   Unable to find installation candidates for onnxruntime-gpu (1.12.1)
+#38 74.97 
+#38 74.97   at ~/.pyenv/versions/3.8.10/lib/python3.8/site-packages/poetry/installation/chooser.py:103 in choose_for
+#38 74.97        99│ 
+#38 74.97       100│             links.append(link)
+#38 74.97       101│ 
+#38 74.97       102│         if not links:
+#38 74.97     → 103│             raise RuntimeError(f"Unable to find installation candidates for {package}")
+#38 74.97       104│ 
+#38 74.97       105│         # Get the best link
+#38 74.97       106│         chosen = max(links, key=lambda link: self._sort_key(package, link))
+#38 74.97       107│ 
+#38 74.97 
+#38 74.97   • Installing opencv-python-headless (4.5.5.64 https://github.com/commaai/opencv-python-builder/releases/download/4.5.5.64%2Bcu113/opencv_python_headless-4.5.5.64-cp38-cp38-manylinux_2_31_x86_64.whl)
+#38 76.77   • Installing pandas (1.5.1)
+#38 78.63   • Installing parameterized (0.8.1)
+#38 79.63   • Installing paramiko (2.11.0)
+#38 81.33   • Installing poetry (1.2.2)
+#38 82.11   • Installing polyline (1.4.0)
+#38 82.62   • Installing pprofile (2.1.0)
+#38 85.09   • Installing pre-commit (2.20.0)
+#38 85.11   • Installing psutil (5.9.3)
+#38 87.65   • Installing pycapnp (1.1.0)
+#38 89.93   • Installing pycryptodome (3.15.0)
+#38 92.34   • Installing pycurl (7.45.1)
+#38 97.51   • Installing pygame (2.1.2)
+#38 98.36   • Installing pyjwt (2.6.0)
+#38 99.00   • Installing pylint (2.15.4)
+#38 102.5   • Installing pyopencl (2022.2.4)
+#38 114.8   • Installing pyprof2calltree (1.4.5)
+#38 120.9   • Installing pyserial (3.5)
+#38 121.8   • Installing pytest-xdist (2.5.0)
+#38 122.7   • Installing pyzmq (23.2.1)
+#38 123.3   • Installing reverse-geocoder (1.5.1)
+#38 128.9   • Installing scons (4.4.0)
+#38 128.9   • Installing sentry-sdk (1.10.0)
+#38 129.9   • Installing setproctitle (1.3.2)
+#38 130.7   • Installing smbus2 (0.4.2)
+#38 131.4   • Installing sounddevice (0.4.5)
+#38 132.0   • Installing sphinx-rtd-theme (1.0.0)
+#38 132.3   • Installing sphinx-sitemap (2.2.0)
+#38 135.0   • Installing spidev (3.6)
+#38 135.1   • Installing spidev2 (0.9.0)
+#38 135.5   • Installing subprocess32 (3.5.4)
+#38 140.2   • Installing tabulate (0.8.10)
+#38 140.2   • Installing tenacity (8.1.0)
+#38 140.7   • Installing timezonefinder (6.1.3)
+#38 141.1   • Installing tqdm (4.64.1)
+#38 141.1   • Installing types-atomicwrites (1.4.5.1)
+#38 141.1   • Installing types-certifi (2021.10.8.3)
+#38 141.9   • Installing types-pycurl (7.45.1)
+#38 141.9   • Installing types-pyyaml (6.0.12)
+#38 141.9   • Installing types-requests (2.28.11.2)
+#38 142.0   • Installing utm (0.7.0)
+#38 142.6   • Installing websocket-client (1.4.1)
+#38 175.2 
+#38 175.2   CalledProcessError
+#38 175.2 
+#38 175.2   Command '['/root/.cache/pypoetry/virtualenvs/openpilot-xtxImsEf-py3.8/bin/python', '-m', 'pip', 'install', '--disable-pip-version-check', '--prefix', '/root/.cache/pypoetry/virtualenvs/openpilot-xtxImsEf-py3.8', '--no-deps', '/root/.cache/pypoetry/artifacts/6e/7e/75/b0356830a3d6a22772ed82fc1c7fbc741150dadd55dea25ceb3850c8ad/opencv_python_headless-4.5.5.64-cp38-cp38-manylinux_2_31_x86_64.whl']' returned non-zero exit status 1.
+#38 175.2 
+#38 175.2   at ~/.pyenv/versions/3.8.10/lib/python3.8/subprocess.py:516 in run
+#38 175.2        512│             # We don't call process.wait() as .__exit__ does that for us.
+#38 175.2        513│             raise
+#38 175.2        514│         retcode = process.poll()
+#38 175.2        515│         if check and retcode:
+#38 175.2     →  516│             raise CalledProcessError(retcode, process.args,
+#38 175.2        517│                                      output=stdout, stderr=stderr)
+#38 175.2        518│     return CompletedProcess(process.args, retcode, stdout, stderr)
+#38 175.2        519│ 
+#38 175.2        520│ 
+#38 175.2 
+#38 175.2 The following error occurred when trying to handle this error:
+#38 175.2 
+#38 175.2 
+#38 175.2   EnvCommandError
+#38 175.2 
+#38 175.2   Command ['/root/.cache/pypoetry/virtualenvs/openpilot-xtxImsEf-py3.8/bin/python', '-m', 'pip', 'install', '--disable-pip-version-check', '--prefix', '/root/.cache/pypoetry/virtualenvs/openpilot-xtxImsEf-py3.8', '--no-deps', '/root/.cache/pypoetry/artifacts/6e/7e/75/b0356830a3d6a22772ed82fc1c7fbc741150dadd55dea25ceb3850c8ad/opencv_python_headless-4.5.5.64-cp38-cp38-manylinux_2_31_x86_64.whl'] errored with the following return code 1, and output: 
+#38 175.2   ERROR: opencv_python_headless-4.5.5.64-cp38-cp38-manylinux_2_31_x86_64.whl is not a supported wheel on this platform.
+#38 175.2   
+#38 175.2 
+#38 175.2   at ~/.pyenv/versions/3.8.10/lib/python3.8/site-packages/poetry/utils/env.py:1476 in _run
+#38 175.3       1472│                 output = subprocess.check_output(
+#38 175.3       1473│                     command, stderr=subprocess.STDOUT, env=env, **kwargs
+#38 175.3       1474│                 )
+#38 175.3       1475│         except CalledProcessError as e:
+#38 175.3     → 1476│             raise EnvCommandError(e, input=input_)
+#38 175.3       1477│ 
+#38 175.3       1478│         return decode(output)
+#38 175.3       1479│ 
+#38 175.3       1480│     def execute(self, bin: str, *args: str, **kwargs: Any) -> int:
+#38 175.3 
+#38 175.3 The following error occurred when trying to handle this error:
+#38 175.3 
+#38 175.3 
+#38 175.3   PoetryException
+#38 175.3 
+#38 175.3   Failed to install /root/.cache/pypoetry/artifacts/6e/7e/75/b0356830a3d6a22772ed82fc1c7fbc741150dadd55dea25ceb3850c8ad/opencv_python_headless-4.5.5.64-cp38-cp38-manylinux_2_31_x86_64.whl
+#38 175.3 
+#38 175.3   at ~/.pyenv/versions/3.8.10/lib/python3.8/site-packages/poetry/utils/pip.py:51 in pip_install
+#38 175.3        47│ 
+#38 175.3        48│     try:
+#38 175.3        49│         return environment.run_pip(*args)
+#38 175.3        50│     except EnvCommandError as e:
+#38 175.3     →  51│         raise PoetryException(f"Failed to install {path.as_posix()}") from e
+#38 175.3        52│ 
+#38 175.3 
+#38 175.6 Warning: The file chosen for install of shellingham 1.5.0 (shellingham-1.5.0-py2.py3-none-any.whl) is yanked. Reason for being yanked: Incorrect package metadata
+------
+executor failed running [/bin/sh -c ./update_requirements_2.sh]: exit code: 1
+

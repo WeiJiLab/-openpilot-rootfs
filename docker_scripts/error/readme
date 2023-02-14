@@ -1,0 +1,12 @@
+Error1: Poetry installation failed
+   Fix: Remove some packages from pyproject.toml and poetry.lock
+   
+=====================================================================
+Errors with Scons:
+   
+Error2: undefined reference to glMapBufferOES
+   Fix: Add /usr/lib/aarch64-linux-gnu to the libpath in SConstruct
+   FYI: /usr/lib/libGL.so (version 1.2.0) does NOT contain the def of glMapBufferOES
+        /usr/lib/aarch64-linux-gnu (version 1.7.0) does contain it.
+        
+Error3: t_renderer 

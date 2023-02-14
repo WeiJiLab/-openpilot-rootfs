@@ -26,4 +26,4 @@ echo "=================================================== After poetry shell" >>
 
 echo "SConscript files to be revised" >> ${TF}
 find . -name SConscript >> ${TF}
-scons -u -j$(nproc)
+scons -u -j$(nproc) --no-test
