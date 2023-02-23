@@ -46,7 +46,7 @@ if [ "$1" == "buildfs" ]; then
 BUILD_DIR="$DIR/build"
 OUTPUT_DIR="$DIR/output"
 
-ROOTFS_DIR="$BUILD_DIR/ok8mp-rootfs"
+ROOTFS_DIR="$BUILD_DIR/rootfs"
 ROOTFS_IMAGE="$BUILD_DIR/system.img.raw"
 ROOTFS_IMAGE_SIZE=10G
 SPARSE_IMAGE="$BUILD_DIR/system.img"
@@ -59,9 +59,12 @@ echo "Creating empty filesystem"
 fallocate -l $ROOTFS_IMAGE_SIZE $ROOTFS_IMAGE
 mkfs.ext4 $ROOTFS_IMAGE > /dev/null
 
+# Clear everything in rootfs
+rm -rf $ROOTFS_DIR
+mkdir $ROOTFS_DIR
+
 # Mount filesystem
 echo "Mounting empty filesystem"
-mkdir -p $ROOTFS_DIR
 sudo umount -l $ROOTFS_DIR > /dev/null || true
 sudo mount $ROOTFS_IMAGE $ROOTFS_DIR
 
@@ -75,21 +78,23 @@ cd $ROOTFS_DIR
 sudo tar -xf $BUILD_DIR/filesystem.tar > /dev/null
 
 # Add hostname and hosts. This cannot be done in the docker container...
-echo "Setting network stuff"
-HOST=tici
-sudo bash -c "echo $HOST > etc/hostname"
-sudo bash -c "echo \"127.0.0.1    localhost.localdomain localhost\" > etc/hosts"
-sudo bash -c "echo \"127.0.0.1    $HOST\" >> etc/hosts"
+#echo "Setting network stuff"
+#HOST=tici
+#sudo bash -c "echo $HOST > etc/hostname"
+#sudo bash -c "echo \"127.0.0.1    localhost.localdomain localhost\" > etc/hosts"
+#sudo bash -c "echo \"127.0.0.1    $HOST\" >> etc/hosts"
 
 # Fix resolv config
-sudo bash -c "ln -sf /run/systemd/resolve/stub-resolv.conf etc/resolv.conf"
+#sudo bash -c "ln -sf /run/systemd/resolve/stub-resolv.conf etc/resolv.conf"
 
 # Write build info
-DATETIME=$(date '+%Y-%m-%dT%H:%M:%S')
-GIT_HASH=$(git --git-dir=$DIR/.git rev-parse HEAD)
-sudo bash -c "printf \"$GIT_HASH\n$DATETIME\" > BUILD"
+#DATETIME=$(date '+%Y-%m-%dT%H:%M:%S')
+#GIT_HASH=$(git --git-dir=$DIR/.git rev-parse HEAD)
+#sudo bash -c "printf \"$GIT_HASH\n$DATETIME\" > BUILD"
 
 cd $DIR
+
+# Make sdcard image
 
 # Unmount image
 echo "Unmount filesystem"

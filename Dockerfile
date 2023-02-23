@@ -76,13 +76,14 @@ RUN chmod 777 /tmp \
 
 FROM ok8mp-install-packages-6 AS ok8mp-install-packages-6-3
 
-# Change Passwd
+# Add new user 'lito'
+# Change username and password
 RUN useradd -s '/bin/bash' -m -G adm,sudo lito  \
- && chpasswd "lito:lito" \
- && chpasswd "root:lito" \
+ && echo "lito:lito" | chpasswd \
+ && echo "root:lito" | chpasswd \
 
 # Set Hostname
- && sh -c 'echo "ubuntu20" > /etc/hostname' \
+ && echo "ubuntu20" > /etc/hostname \
  && dpkg-reconfigure -f noninteractive resolvconf
 
 FROM ok8mp-install-packages-6-3 AS ok8mp-install-packages-7
@@ -153,7 +154,7 @@ RUN ./configure --disable-documentation prefix=/usr \
 
 FROM ok8mp-install-wayland AS ok8mp-install-wayland-protocols
 
-WORKDIR /tmp 
+WORKDIR /tmp
 RUN git clone https://source.codeaurora.org/external/imx/wayland-protocols-imx.git
 WORKDIR wayland-protocols-imx
 RUN git checkout wayland-protocols-imx-1.18 \
@@ -181,8 +182,12 @@ RUN ninja -v -j 4 install
 
 FROM ok8mp-install-weston AS ok8mp-install-openpilot-tools
 
+# Clear /tmp folder to shrink tar size
+WORKDIR /tmp
+
 # Please refer to tools/update_ubuntu.sh to see what needs to be installed
-RUN apt-get update \
+RUN rm -rf ./* \
+ && apt-get update \
  && apt-get install -y --no-install-recommends \
     autoconf \
     build-essential \
@@ -244,8 +249,7 @@ RUN apt-get update \
     valgrind \
     libavresample-dev \
     qt5-default \
-    python-dev \
-    python3-pip
+    python-dev
 
 # ############################# #
 # ###### Clone OpenPilot ###### #
@@ -254,7 +258,7 @@ RUN apt-get update \
 FROM ok8mp-install-openpilot-tools AS ok8mp-download-openpilot
 
 # Clone source code
-WORKDIR /tmp
+WORKDIR /opt
 RUN git clone https://github.com/WeiJiLab/openpilot.git
 WORKDIR openpilot
 RUN git submodule update --init 
@@ -267,7 +271,7 @@ RUN git submodule update --init
 
 FROM ok8mp-download-openpilot AS ok8mp-update-requirements
 
-WORKDIR /tmp/openpilot
+WORKDIR /opt/openpilot
 
 # The dependencies in pyproject.toml yields installation error on an ARM machine. We must replace pyproject.toml with a proper one.
 # We also modify update_requirements.sh so that poetry does not create a virtual env. The docker container itself is already isolated.
@@ -284,7 +288,11 @@ RUN ./update_requirements.sh
 
 FROM ok8mp-update-requirements AS ok8mp-build-openpilot
 
-WORKDIR /tmp/openpilot
-RUN rm -f ./SConstruct
+WORKDIR /opt/openpilot
+RUN rm -f ./SConstruct \
+ && rm -rf .git
 ADD docker_scripts/build_openpilot.sh docker_scripts/SConstruct .
 RUN ./build_openpilot.sh
+
+# Finally turn to user lito
+USER lito
