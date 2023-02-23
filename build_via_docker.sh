@@ -41,65 +41,83 @@ export DOCKER_BUILDKIT=1
 export DOCKER_CLI_EXPERIMENTAL=enabled
 docker build -f Dockerfile -t ok8mp-ubuntu-builder $DIR
 
-if [ "$1" == "buildfs" ]; then
+export BUILD_DIR="$DIR/build"
+export OUTPUT_DIR="$DIR/output"
 
-BUILD_DIR="$DIR/build"
-OUTPUT_DIR="$DIR/output"
-
-ROOTFS_DIR="$BUILD_DIR/rootfs"
+export ROOTFS_DIR="$BUILD_DIR/rootfs"
 ROOTFS_IMAGE="$BUILD_DIR/system.img.raw"
 ROOTFS_IMAGE_SIZE=10G
-SPARSE_IMAGE="$BUILD_DIR/system.img"
+#SPARSE_IMAGE="$BUILD_DIR/system.img"
 
 # Create temp dir if non-existent
 mkdir -p $BUILD_DIR $OUTPUT_DIR
 
-# Create filesystem ext4 image
-echo "Creating empty filesystem"
-fallocate -l $ROOTFS_IMAGE_SIZE $ROOTFS_IMAGE
-mkfs.ext4 $ROOTFS_IMAGE > /dev/null
+# Extract filesystem.tar
+if [ "$1" == "xfs" ]; then
 
-# Clear everything in rootfs
-rm -rf $ROOTFS_DIR
-mkdir $ROOTFS_DIR
+	# Extract image
+	echo "Extracting docker image"
+	CONTAINER_ID=$(docker container create --entrypoint /bin/bash ok8mp-ubuntu-builder:latest)
+	docker container export -o $BUILD_DIR/filesystem.tar $CONTAINER_ID
+	docker container rm $CONTAINER_ID > /dev/null
+	echo "Docker image extracted to filesystem.tar"
 
-# Mount filesystem
-echo "Mounting empty filesystem"
-sudo umount -l $ROOTFS_DIR > /dev/null || true
-sudo mount $ROOTFS_IMAGE $ROOTFS_DIR
+fi
 
-# Extract image
-echo "Extracting docker image"
-CONTAINER_ID=$(docker container create --entrypoint /bin/bash ok8mp-ubuntu-builder:latest)
-docker container export -o $BUILD_DIR/filesystem.tar $CONTAINER_ID
-docker container rm $CONTAINER_ID > /dev/null
-echo "Extract to build/filesystem.tar ..."
-cd $ROOTFS_DIR
-sudo tar -xf $BUILD_DIR/filesystem.tar > /dev/null
+if [ "$1" == "mtfs" ]; then
 
-# Add hostname and hosts. This cannot be done in the docker container...
-#echo "Setting network stuff"
-#HOST=tici
-#sudo bash -c "echo $HOST > etc/hostname"
-#sudo bash -c "echo \"127.0.0.1    localhost.localdomain localhost\" > etc/hosts"
-#sudo bash -c "echo \"127.0.0.1    $HOST\" >> etc/hosts"
+	# Create filesystem ext4 image
+	echo "Creating empty filesystem"
+	fallocate -l $ROOTFS_IMAGE_SIZE $ROOTFS_IMAGE
+	mkfs.ext4 $ROOTFS_IMAGE > /dev/null
 
-# Fix resolv config
-#sudo bash -c "ln -sf /run/systemd/resolve/stub-resolv.conf etc/resolv.conf"
+	# Clear everything in rootfs
+	rm -rf $ROOTFS_DIR
+	mkdir $ROOTFS_DIR
 
-# Write build info
-#DATETIME=$(date '+%Y-%m-%dT%H:%M:%S')
-#GIT_HASH=$(git --git-dir=$DIR/.git rev-parse HEAD)
-#sudo bash -c "printf \"$GIT_HASH\n$DATETIME\" > BUILD"
+	# Mount filesystem
+	echo "Mounting empty filesystem"
+	sudo umount -l $ROOTFS_DIR > /dev/null || true
+	sudo mount $ROOTFS_IMAGE $ROOTFS_DIR
 
-cd $DIR
+	echo "Extract to rootfs"
+	cd $ROOTFS_DIR
+	sudo tar -xf $BUILD_DIR/filesystem.tar > /dev/null
 
-# Make sdcard image
+	# Add hostname and hosts. This cannot be done in the docker container...
+	#echo "Setting network stuff"
+	#HOST=tici
+	#sudo bash -c "echo $HOST > etc/hostname"
+	#sudo bash -c "echo \"127.0.0.1    localhost.localdomain localhost\" > etc/hosts"
+	#sudo bash -c "echo \"127.0.0.1    $HOST\" >> etc/hosts"
 
-# Unmount image
-echo "Unmount filesystem"
-sudo umount -l $ROOTFS_DIR
+	# Fix resolv config
+	#sudo bash -c "ln -sf /run/systemd/resolve/stub-resolv.conf etc/resolv.conf"
 
-echo "Done!"
+	# Write build info
+	#DATETIME=$(date '+%Y-%m-%dT%H:%M:%S')
+	#GIT_HASH=$(git --git-dir=$DIR/.git rev-parse HEAD)
+	#sudo bash -c "printf \"$GIT_HASH\n$DATETIME\" > BUILD"
+	sudo umount -l $ROOTFS_DIR
+	echo "Finish building the rootfs directory. Unmounting..."
+
+fi
+
+if [ "$1" == "mksd" ]; then
+
+	cd $DIR
+	echo "Mounting empty filesystem"
+	sudo umount -l $ROOTFS_DIR > /dev/null || true
+	sudo mount $ROOTFS_IMAGE $ROOTFS_DIR
+
+	# Make sdcard image
+	echo "Making SD card image ..."
+	fakeroot -- ${DIR}/fakeroot.fs
+
+	# Unmount image
+	echo "Unmount filesystem"
+	sudo umount -l $ROOTFS_DIR
+
+	echo "Done!"
 
 fi
