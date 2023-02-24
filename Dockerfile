@@ -182,12 +182,8 @@ RUN ninja -v -j 4 install
 
 FROM ok8mp-install-weston AS ok8mp-install-openpilot-tools
 
-# Clear /tmp folder to shrink tar size
-WORKDIR /tmp
-
 # Please refer to tools/update_ubuntu.sh to see what needs to be installed
-RUN rm -rf ./* \
- && apt-get update \
+RUN apt-get update \
  && apt-get install -y --no-install-recommends \
     autoconf \
     build-essential \
@@ -289,10 +285,16 @@ RUN ./update_requirements.sh
 FROM ok8mp-update-requirements AS ok8mp-build-openpilot
 
 WORKDIR /opt/openpilot
-RUN rm -f ./SConstruct \
- && rm -rf .git
+RUN rm -f ./SConstruct
 ADD docker_scripts/build_openpilot.sh docker_scripts/SConstruct .
 RUN ./build_openpilot.sh
+
+# ##################### #
+# ###### Cleanup ###### #
+# ##################### #
+
+WORKDIR /tmp
+RUN rm -rf ./*
 
 # Finally turn to user lito
 USER lito
