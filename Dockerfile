@@ -254,7 +254,7 @@ RUN apt-get update \
 FROM ok8mp-install-openpilot-tools AS ok8mp-download-openpilot
 
 # Clone source code
-WORKDIR /opt
+WORKDIR /data
 RUN git clone https://github.com/WeiJiLab/openpilot.git
 WORKDIR openpilot
 RUN git submodule update --init 
@@ -267,7 +267,7 @@ RUN git submodule update --init
 
 FROM ok8mp-download-openpilot AS ok8mp-update-requirements
 
-WORKDIR /opt/openpilot
+WORKDIR /data/openpilot
 
 # The dependencies in pyproject.toml yields installation error on an ARM machine. We must replace pyproject.toml with a proper one.
 # We also modify update_requirements.sh so that poetry does not create a virtual env. The docker container itself is already isolated.
@@ -284,7 +284,7 @@ RUN ./update_requirements.sh
 
 FROM ok8mp-update-requirements AS ok8mp-build-openpilot
 
-WORKDIR /opt/openpilot
+WORKDIR /data/openpilot
 RUN rm -f ./SConstruct
 ADD docker_scripts/build_openpilot.sh docker_scripts/SConstruct .
 RUN ./build_openpilot.sh
@@ -293,8 +293,8 @@ RUN ./build_openpilot.sh
 # ###### Cleanup ###### #
 # ##################### #
 
-WORKDIR /tmp
-RUN rm -rf ./*
+#WORKDIR /tmp
+#RUN rm -rf ./*
 
 # Finally turn to user lito
 USER lito
