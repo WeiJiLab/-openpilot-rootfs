@@ -56,6 +56,10 @@ mkdir -p $BUILD_DIR $OUTPUT_DIR
 if [ "$1" == "xfs" ]; then
 
 	# Extract image
+	if [ -e $BUILD_DIR/filesystem.tar ]; then
+		echo "Deleting the old filesystem.tar"
+		rm -rf $BUILD_DIR/filesystem.tar
+	fi
 	echo "Extracting docker image"
 	CONTAINER_ID=$(docker container create --entrypoint /bin/bash ok8mp-ubuntu-builder:latest)
 	docker container export -o $BUILD_DIR/filesystem.tar $CONTAINER_ID

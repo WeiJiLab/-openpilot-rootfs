@@ -252,9 +252,10 @@ RUN apt-get update \
 # ############################# #
 
 FROM ok8mp-install-openpilot-tools AS ok8mp-download-openpilot
+USER lito
+WORKDIR /data
 
 # Clone source code
-WORKDIR /data
 RUN git clone https://github.com/WeiJiLab/openpilot.git
 WORKDIR openpilot
 RUN git submodule update --init 
@@ -287,6 +288,10 @@ FROM ok8mp-update-requirements AS ok8mp-build-openpilot
 WORKDIR /data/openpilot
 RUN rm -f ./SConstruct
 ADD docker_scripts/build_openpilot.sh docker_scripts/SConstruct .
+# Temporarily need root priviledge to create a symbolic link
+USER root
+RUN ln -s /home/lito/.pyenv/versions/3.8.10/lib/libpython3.8.so /usr/lib/aarch64-linux-gnu/libpython3.8.so
+USER lito
 RUN ./build_openpilot.sh
 
 # ##################### #

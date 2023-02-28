@@ -13,7 +13,7 @@ echo "Current python version $(python -V)" >> ${TF}
 echo "Current python location $(which python)" >> ${TF}
 #echo "ldconfig can find the following:\n$(ldconfig -v)" >> ${TF}
 
-ln -s ${PYENV_ROOT}/versions/3.8.10/lib/libpython3.8.so /usr/lib/aarch64-linux-gnu/libpython3.8.so
+#ln -s ${PYENV_ROOT}/versions/3.8.10/lib/libpython3.8.so /usr/lib/aarch64-linux-gnu/libpython3.8.so
 
 # Start building
 echo "poetry starts a new shell and activates virtual env"
