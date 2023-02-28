@@ -57,7 +57,6 @@ RUN chmod 777 /tmp \
 	git \
 	v4l-utils \
 	alsa-utils \
-#	git \
 	gcc \
 	less \
 	autoconf \
@@ -81,9 +80,6 @@ FROM ok8mp-install-packages-6 AS ok8mp-install-packages-6-3
 RUN useradd -s '/bin/bash' -m -G adm,sudo lito  \
  && echo "lito:lito" | chpasswd \
  && echo "root:lito" | chpasswd \
-
-# Set Hostname
- && echo "ubuntu20" > /etc/hostname \
  && dpkg-reconfigure -f noninteractive resolvconf
 
 FROM ok8mp-install-packages-6-3 AS ok8mp-install-packages-7
@@ -253,6 +249,8 @@ RUN apt-get update \
 
 FROM ok8mp-install-openpilot-tools AS ok8mp-download-openpilot
 USER lito
+RUN git config --global user.name "lito" \
+ && git config --global user.email "lito@163.com"
 WORKDIR /data
 
 # Clone source code
@@ -261,6 +259,9 @@ WORKDIR openpilot
 RUN git submodule update --init 
 # RUN chmod u+x tools/ubuntu_setup.sh \
 #  && tools/ubuntu_setup.sh
+USER root
+RUN chown -R lito:lito .
+USER lito
 
 # ############################################### #
 # ###### Update Requirements for OpenPilot ###### #
@@ -274,7 +275,7 @@ WORKDIR /data/openpilot
 # We also modify update_requirements.sh so that poetry does not create a virtual env. The docker container itself is already isolated.
 # TODO: After revising the Weijilab/openpilot project accordingly, this step can be skipped.
 RUN rm -f ./pyproject.toml ./poetry.lock ./update_requirements.sh
-ADD docker_scripts/pyproject.toml docker_scripts/poetry.lock docker_scripts/update_requirements.sh .
+ADD --chown=lito:lito docker_scripts/pyproject.toml docker_scripts/poetry.lock docker_scripts/update_requirements.sh .
 RUN ./update_requirements.sh
 # Adding extra env-vars, which is duplicate work, already done on the last line '. ~/.pyenvrc' in /root/.bashrc
 # RUN echo "\nsource /tmp/openpilot/tools/openpilot_env.sh" >> ~/.bashrc
@@ -287,7 +288,7 @@ FROM ok8mp-update-requirements AS ok8mp-build-openpilot
 
 WORKDIR /data/openpilot
 RUN rm -f ./SConstruct
-ADD docker_scripts/build_openpilot.sh docker_scripts/SConstruct .
+ADD --chown=lito:lito docker_scripts/build_openpilot.sh docker_scripts/SConstruct .
 # Temporarily need root priviledge to create a symbolic link
 USER root
 RUN ln -s /home/lito/.pyenv/versions/3.8.10/lib/libpython3.8.so /usr/lib/aarch64-linux-gnu/libpython3.8.so
@@ -298,8 +299,10 @@ RUN ./build_openpilot.sh
 # ###### Cleanup ###### #
 # ##################### #
 
-#WORKDIR /tmp
-#RUN rm -rf ./*
+USER root
+WORKDIR /tmp
+RUN mv scons_cache /data \
+ && rm -rf ./*
 
 # Finally turn to user lito
 USER lito
