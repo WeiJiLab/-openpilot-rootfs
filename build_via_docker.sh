@@ -20,15 +20,9 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 cd $DIR
 
 # Check we have the required packages and libraries. Download Ubuntu Base if not done already
-UBUNTU_BASE_URL="http://cdimage.ubuntu.com/ubuntu-base/releases/20.04/release"
-UBUNTU_FILE="ubuntu-base-20.04.1-base-arm64.tar.gz"
-YOCTO_FILE="yocoto.tar.gz"
+UBUNTU_FILE="ok8mp-rootfs-dockerbase.tar.gz"
 if [ ! -f $UBUNTU_FILE ]; then
-  echo -e "${GREEN}Downloading Ubuntu: $UBUNTU_FILE ${NO_COLOR}"
-  wget -c $UBUNTU_BASE_URL/$UBUNTU_FILE --quiet
-fi
-if [ ! -f $YOCTO_FILE ]; then
-  echo -e "${RED}Require built libraries compressed within $YOCTO_FILE . Please follow i.MX Yocto Project Users Guide. ${NO_COLOR}"
+  echo -e "${GREEN}Require an initial rootfs $UBUNTU_FILE ${NO_COLOR}"
   exit 1
 fi
 
@@ -39,7 +33,7 @@ fi
 echo "Building image"
 export DOCKER_BUILDKIT=1
 export DOCKER_CLI_EXPERIMENTAL=enabled
-docker build -f Dockerfile -t ok8mp-ubuntu-builder $DIR
+docker build -f Dockerfile -t ok8mp-forlinx-builder $DIR
 
 export BUILD_DIR="$DIR/build"
 export OUTPUT_DIR="$DIR/output"

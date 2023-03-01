@@ -3,3 +3,4 @@ rootfs
 .DS_Store
 build/*
 output/*
+ok8mp-rootfs-dockerbase.tar.gz
