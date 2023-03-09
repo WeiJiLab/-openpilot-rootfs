@@ -2,5 +2,5 @@
 set -x
 
 function build_stage_3() {
-    # install openpilot
+    echo 'build_stage_3'
 }
