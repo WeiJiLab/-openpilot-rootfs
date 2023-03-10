@@ -135,6 +135,8 @@ else:
     ]
   # aarch64  
   elif arch == "aarch64" or arch == "arm64":
+    lenv["LD_LIBRARY_PATH"] = [Dir(f"#third_party/acados/larch64/lib").abspath]
+    #lenv["LD_LIBRARY_PATH"] += ['/data/data/com.termux/files/usr/lib']
     lenv["TERA_PATH"] = Dir("#").abspath + f"/third_party/acados/larch64/t_renderer"
     cpppath = [
       "#third_party/opencl/include",
