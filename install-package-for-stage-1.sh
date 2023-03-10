@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 echo '## Start to install packages ################################'
 
@@ -130,11 +131,5 @@ if [ "$?" != "0" ]; then
     exit 1
 fi
 echo '## Finished to install packages ################################'
-
-echo '## Start openpilit env setup ################################'
-cd /openpilot
-./tools/ubuntu_setup.sh
-cd ..
-echo '## Finished openpilit env setup ################################'
 
 exit 0
