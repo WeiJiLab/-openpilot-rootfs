@@ -300,6 +300,11 @@ RUN ./build_openpilot.sh
 # ##################### #
 
 USER root
+
+# Some extra installations
+RUN apt-get update \
+ && apt-get install tmux openssh-server
+
 WORKDIR /tmp
 RUN mv scons_cache /data \
  && rm -rf ./*
