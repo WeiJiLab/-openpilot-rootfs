@@ -32,9 +32,8 @@ while [ $# -gt 0 ]; do
     esac
 done
 
-
 ###########################################
-# Step 1
+# stage 1
 ###########################################
 if [ "${stage}" == "1" ] || [ "$stage" == "all" ]; then
     source ./build-stage-1.sh
@@ -42,17 +41,34 @@ if [ "${stage}" == "1" ] || [ "$stage" == "all" ]; then
 fi
 
 ###########################################
-# Step 2
+# stage 2
 ###########################################
 if [ "${stage}" == "2" ] || [ "$stage" == "all" ]; then
+    # clone openpilot
+    # need add following lines to ~/.ssh/config
+    #   Host github.com
+    #       AddKeysToAgent yes
+    #       StrictHostKeyChecking no
+    #       IdentityFile ~/.ssh/id_rsa
+    if [ -d './openpilot' ]; then
+        rm -rf './openpilot'
+    fi
+    git clone git@github.com:WeiJiLab/openpilot.git
+    if [ "$?" != "0" ]; then
+        exit 1
+    fi
+    cd openpilot
+    git submodule update --init
+    cd -
+
     source ./build-stage-2.sh
-    build_stage_2
+    build_stage_2 "${image}"
 fi
 
 ###########################################
-# Step 3
+# stage 3
 ###########################################
 if [ "${stage}" == "3" ] || [ "$stage" == "all" ]; then
     source ./build-stage-3.sh
-    build_stage_3
+    build_stage_3 "${image}"
 fi

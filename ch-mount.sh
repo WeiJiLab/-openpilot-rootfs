@@ -11,7 +11,7 @@ function mnt() {
     if [ -n "${3}" ]; then
 	   sudo chroot "${2}" /bin/bash -c "${3}"
     else
-        sudo chroot "${2}"
+       sudo chroot "${2}"
     fi
 }
 function umnt() {
