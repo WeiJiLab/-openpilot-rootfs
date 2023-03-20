@@ -7,10 +7,18 @@ function show_usages() {
     echo '  -b | --block-count  block count of target image. 1M per block'
     echo '  -h | --help   show usages'
     echo 'Example:'
-    echo "  ./build.sh -s 1 -i './images/rootfs.img' -b 6000"
+    echo '  for build all stages'
+    echo "    ./build.sh -s all './images/rootfs.img' -b 6000"
+    echo "  if you only want to build one stage, you can choose following command with you status"
+    echo '    stage 1:'
+    echo "      ./build.sh -s 1 -i './images/rootfs.img' -b 6000"
+    echo '    stage 2:'
+    echo "      ./build.sh -s 2 -i './images/rootfs.img'"
+    echo '    stage 3:'
+    echo "      ./build.sh -s 3 -i './images/rootfs.img'"
 }
 
-OPTIONS=`getopt -o sibh: --long stage,image,block-count,help -n 'build' -- "$@"`
+OPTIONS=`getopt -o s:i:b:h --long stage,image,block-count,help -n 'build' -- "$@"`
 if [ $? -ne 0 ]; then
     echo '[ERROR] failed to parse arguments'
     show_usages
