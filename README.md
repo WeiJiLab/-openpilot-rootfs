@@ -21,20 +21,20 @@
 ```shell
 $ ./build.sh -h
 Usages:
--s | --stage  indicates run which stage of build. valid value are "1, 2, 3, all"
--i | --image  target image path
--b | --block-count  block count of target image. 1M per block
--h | --help   show usages
+  -s | --stage  indicates run which stage of build. valid value are "1, 2, 3, all"
+  -i | --image  target image path
+  -b | --block-count  block count of target image. 1M per block
+  -h | --help   show usages
 Example:
-for build all stages
-./build.sh -s all './images/rootfs.img' -b 6000
-if you only want to build one stage, you can choose following command with you status
-stage 1:
-./build.sh -s 1 -i './images/rootfs.img' -b 6000
-stage 2:
-./build.sh -s 2 -i './images/rootfs.img'
-stage 3:
-./build.sh -s 3 -i './images/rootfs.img'
+  for build all stages
+    ./build.sh -s all './images/rootfs.img' -b 6000
+  if you only want to build one stage, you can choose following command with you status
+    stage 1:
+      ./build.sh -s 1 -i './images/rootfs.img' -b 6000
+    stage 2:
+      ./build.sh -s 2 -i './images/rootfs.img'
+    stage 3:
+      ./build.sh -s 3 -i './images/rootfs.img'
 ```
 
 使用build.sh构建时，该构建过程被分为3个stage
